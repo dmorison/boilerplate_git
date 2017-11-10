@@ -17,21 +17,17 @@ gulp.task('babel-js', () => {
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('watch', () => {
-	gulp.watch('scripts/app.js', ['babel-js']);
+gulp.task('styles', () => {
+	gulp.src('stylesheets/**/*.scss')
+		.pipe(sourcemaps.init())
+		.pipe(sass().on('error', sass.logError))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('css/'));
 });
 
-gulp.task('default', ['babel-js', 'watch']);
+gulp.task('watch', () => {
+	gulp.watch('scripts/app.js', ['babel-js']);
+	gulp.watch('stylesheets/**/*.scss', ['styles']);
+});
 
-// gulp.task('styles', function() {
-//     gulp.src('stylesheets/**/*.scss')
-//     	.pipe(sourcemaps.init())
-//         	.pipe(sass().on('error', sass.logError))
-//         .pipe(sourcemaps.write())
-//         .pipe(gulp.dest('css/'));
-// });
-
-//Watch task
-// gulp.task('watch', function() {
-//     gulp.watch('stylesheets/**/*.scss', ['styles']);
-// });
+gulp.task('default', ['babel-js', 'styles', 'watch']);
